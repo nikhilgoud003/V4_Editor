@@ -1,0 +1,22 @@
+# run outputs and test folders
+out*/
+tests*/
+try_*/
+analysis*/
+*.jsonl
+*.log
+state.json
+score*.json
+review_sample.csv
+
+# input data and reference files (PACER JSON, answer key, FJC list)
+data/
+*.json
+*.zip
+
+# environments / caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.DS_Store
