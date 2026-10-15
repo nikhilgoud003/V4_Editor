@@ -1,0 +1,5 @@
+rapidfuzz>=3.0
+pyyaml>=6.0
+gliner2[local]>=2.1.0
+spacy>=3.7
+probablepeople>=0.5.6
