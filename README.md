@@ -59,6 +59,34 @@ python test_ctx.py tests_run1            # the folder name must not exist yet
 - **Test 15c** needs `data/judges_fjc.csv`; otherwise it is skipped.
 - With both inputs present there are 36 checks.
 
+## Document reader
+
+`doc_reader` is separate from the docket pipeline. It reads OCR or layout JSON (pages of blocks with text, confidence, and a box) and writes entity mentions. Any other JSON is read as generic text fields. Docket JSON is skipped.
+
+Python 3.13 is supported. `probablepeople` 0.5.6 installs on 3.13 and is the second person vote, together with spaCy. The extractor is GLiNER2 `fastino/gliner2-base-v1` on CPU. The first run downloads that model.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+```
+
+```bash
+python -m doc_reader --input /path/to/ocr_json --output /path/to/out_folder
+python -m doc_reader --input /path/to/one.json --output /path/to/out_folder --model ollama --ollama-model qwen2.5:7b
+python test_doc_reader.py
+```
+
+On a Mac, if spaCy and PyTorch both load OpenMP, set these before the command:
+
+```bash
+export KMP_DUPLICATE_LIB_OK=TRUE
+export OMP_NUM_THREADS=1
+```
+
+The output folder gets `mentions.jsonl` (the same mention fields as `v4_run_ctx.py`, plus page, box, scores, and `source` set to `document`), `review.jsonl`, `review_docs.csv` (a `correct?` column left empty), and `report.md`.
+
 ## Scoring
 
 `score.py` scores runs against a hand-made answer key folder (`answer_key_detail.csv`, `work/sample200.txt`). The key is not included.
